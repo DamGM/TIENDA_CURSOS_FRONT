@@ -1,0 +1,30 @@
+.App {
+  text-align: center;
+  background-color: #ffff;
+}
+
+
+.container {
+  margin-top: 20px;
+}
+
+.text-justify{
+  text-align: justify;
+}
+
+img {
+  width: 100%;
+}
+
+.botones{
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.button {
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+

@@ -1,0 +1,25 @@
+.curso{
+    border:8em black;
+}
+
+.curso:hover {
+    box-shadow: 10px 20px 20px 2px rgba(105, 105, 97, 0.273)!important;
+    transition:all 0.5s linear ;
+}
+.curso-body {
+    padding: 2rem 0 !important;
+}
+
+.curso-text {
+    padding: 0.3rem 1rem ;
+    font-size: 1rem;
+}
+.overflow {
+    overflow: hidden;
+}
+.curso-img-top {
+ transition: all 0.2s ease-in-out;
+}
+.curso-img-top:hover {
+    transform:scale(1.8) ;
+}
