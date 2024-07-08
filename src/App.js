@@ -4,6 +4,8 @@ import './App.css';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Inicio from './pages/Inicio';
+import Login from './pages/Login';
+import Registro from './pages/Registro';
 
 
 
@@ -14,6 +16,8 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<Inicio />} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/registro" element={<Registro/>} />
         </Routes>
         <Footer />
       </div>
