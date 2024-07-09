@@ -41,28 +41,30 @@ function Login() {
       ) : (
         <div>
           <h1 style={{ padding: '20px' }}>Accede a tu cuenta</h1>
-          <form>
+          <form onSubmit={handleLogin}> 
           <div className="mb-3" style={{ textAlign: 'left' }} >
             <label  htmlFor="email" className="form-label" >EMAIL</label>
-            </div>
-            <div className="mb-3">
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={{ width: '100%' }}
+             type="email"
+             id="email"
+             value={email}
+             onChange={(e) => setEmail(e.target.value)}
+             style={{ width: '100%' }}
+             autoComplete="email"
+             required
             />
             </div>
             <br />
             <div className="mb-3" style={{ textAlign: 'left' }} >
             <label htmlFor="password" className="form-label">CONTRASEÑA</label>
-            </div>
-            <div className="mb-3">
             <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{ width: '100%' }}
+               type="password"
+               id="password"
+               value={password}
+               onChange={(e) => setPassword(e.target.value)}
+               style={{ width: '100%' }}
+               autoComplete="current-password"
+               required
             />
             </div>
             <br />
