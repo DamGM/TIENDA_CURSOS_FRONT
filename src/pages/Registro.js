@@ -1,34 +1,49 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom'; 
-import { register, getUserData } from '../services/api';
+import { supabase } from '../services/client';
 import { Container } from 'react-bootstrap';
 
 function Registro() {
-  
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
-  const handleRegister = async (event) => {
-    event.preventDefault();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
     try {
-      const token = await register(email, password, name);
-      localStorage.setItem('token', token);
-      fetchUserData(token);
+      const { user, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        data: { name: name },
+      });
+      if (error) {
+        console.error('Error al registrar:', error.message);
+        return;
+      }
+      await supabase.from('users').update({ name }).eq('id', user.id);
+      fetchUserData();
     } catch (error) {
-      console.error('Error al registrar:', error);
+      console.error('Error al registrar:', error.message);
     }
   };
-
-  const fetchUserData = async (token) => {
+  const fetchUserData = async () => {
     try {
-      const userData = await getUserData(token); 
-      setUser(userData); 
+      const { data, error } = await supabase
+        .from('users')
+        .select('name, email')
+        .eq('id', supabase.auth.user().id)
+        .single();
+  
+      if (error) {
+        console.error('Error fetching user data:', error);
+      } else {
+        setUser(data);
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
     }
-    catch (error) {
-    console.error('Error al obtener datos del usuario:', error);
-  }
   };
 
   return (
@@ -78,7 +93,7 @@ function Registro() {
             />
             </div>
             <br />
-            <button type="submit" className="btn btn-primary " onClick={(e) => handleRegister(e)}>Registrarse</button>
+            <button type="submit" className="btn btn-primary ">Registrarse</button>
           </form>
           {user && (
         <div>
