@@ -6,8 +6,7 @@ import Footer from './components/Footer';
 import Inicio from './pages/Inicio';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
-import Comunidad from './pages/Comunidad';
-import Publicaciones from './pages/CursosVenta';
+import Publicaciones from './pages/Comunidad';
 
 
 function App() {
@@ -19,8 +18,8 @@ function App() {
           <Route path="/" element={<Inicio />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/registro" element={<Registro/>} />
-          <Route path="/comunidad" element={<Comunidad/>} />
-          <Route path="/CursosVenta" element={<Publicaciones/>} />
+          <Route path="/comunidad" element={<Publicaciones/>} />
+          
         </Routes>
         <Footer />
       </div>

@@ -1,5 +1,4 @@
-// Login.js
-import { useState } from 'react';
+import { useState} from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { supabase } from '../services/client'; 
@@ -20,7 +19,7 @@ function Login() {
 
       setSession(session);
       setUser(user);
-      // Obtener datos del usuario
+     
       fetchUserData();
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message);

@@ -4,45 +4,27 @@ import { supabase } from '../services/client';
 import { Container } from 'react-bootstrap';
 
 function Registro() {
-  const [user, setUser] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       const { user, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-        data: { name: name },
+        email,
+        password,
+       
       });
+
       if (error) {
-        console.error('Error al registrar:', error.message);
+        console.error('Error al registrar:', error.message)
         return;
-      }
-      await supabase.from('users').update({ name }).eq('id', user.id);
-      fetchUserData();
+      }    console.log('Usuario registrado', user);
+
+
     } catch (error) {
       console.error('Error al registrar:', error.message);
-    }
-  };
-  const fetchUserData = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('name, email')
-        .eq('id', supabase.auth.user().id)
-        .single();
-  
-      if (error) {
-        console.error('Error fetching user data:', error);
-      } else {
-        setUser(data);
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
     }
   };
 
@@ -95,14 +77,7 @@ function Registro() {
             <br />
             <button type="submit" className="btn btn-primary ">Registrarse</button>
           </form>
-          {user && (
-        <div>
-          <h2>Bienvenido, {user.name}!</h2>
-          <p>Email: {user.email}</p>
-          
-        </div>
-         )}
-        </div>
+         </div>
         </Container>
       )
     }
