@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link , useNavigate } from 'react-router-dom'; 
 import { supabase } from '../services/client';
 import { Container } from 'react-bootstrap';
 
@@ -7,6 +7,7 @@ function Registro() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -21,8 +22,9 @@ function Registro() {
         console.error('Error al registrar:', error.message)
         return;
       }    console.log('Usuario registrado', user);
-
-
+      // TODO: ruta a mis cursos cuando esté hecho
+      navigate('/');
+     
     } catch (error) {
       console.error('Error al registrar:', error.message);
     }
