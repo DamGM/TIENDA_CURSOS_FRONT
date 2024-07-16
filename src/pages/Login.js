@@ -1,6 +1,6 @@
 import { useState} from 'react';
 import { Container, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../services/client'; 
 
 function Login() {
@@ -8,32 +8,28 @@ function Login() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  async function handleLogin(e) {
     e.preventDefault();
     try {
-      await supabase.auth.signIn({
+      const { data: { session, user }, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
+      if (error) {
+        console.error('Error al iniciar sesión:', error.message);
+        return;
+      }
+
       setSession(session);
       setUser(user);
-     
-      fetchUserData();
+      navigate('/'); 
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message);
     }
-  };
-
-  const fetchUserData = async () => {
-    try {
-      const user = supabase.auth.user();
-      setUser(user);
-    } catch (error) {
-      console.error('Error al obtener datos del usuario:', error.message);
-    }
-  };
+  }
 
   const handleLogout = async () => {
     try {

@@ -7,7 +7,8 @@ import Inicio from './pages/Inicio';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 import Publicaciones from './pages/Comunidad';
-
+import CursosComprados from './pages/CursosComprados';
+import CursosVenta from './pages/CursosVenta';
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/registro" element={<Registro/>} />
           <Route path="/comunidad" element={<Publicaciones/>} />
-          
+          <Route path="/CursosComprados" element={<CursosComprados/>} />
+          <Route path="/CursosVenta" element={<CursosVenta/>} />
         </Routes>
         <Footer />
       </div>

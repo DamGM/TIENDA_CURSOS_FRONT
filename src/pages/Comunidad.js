@@ -10,7 +10,16 @@ function Publicaciones() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error('Error al obtener usuario:', error.message);
+        return;
+      }
+
       setUser(user);
     };
 
@@ -72,7 +81,7 @@ function Publicaciones() {
             required
           />
         </Form.Group>
-        <Button variant="primary" type="submit" className='mt-5'>
+        <Button variant="primary" type="submit" className="mt-5">
           Publicar
         </Button>
       </Form>
@@ -81,7 +90,10 @@ function Publicaciones() {
           <ListGroup.Item key={publicacion.id}>
             <h3>{publicacion.titulo}</h3>
             <p>{publicacion.content}</p>
-            <small>Publicado por: {publicacion.user_id} el {new Date(publicacion.created_at).toLocaleString()}</small>
+            <small>
+              Publicado por: {publicacion.user_id} el{' '}
+              {new Date(publicacion.created_at).toLocaleString()}
+            </small>
           </ListGroup.Item>
         ))}
       </ListGroup>

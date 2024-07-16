@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link , useNavigate } from 'react-router-dom'; 
 import { supabase } from '../services/client';
-import { Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap'
 
 function Registro() {
   const [email, setEmail] = useState('');
