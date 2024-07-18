@@ -34,7 +34,7 @@ export default function CursosPopulares() {
         <div className='container d-flex justify-content-center align-items-center h-40'>
             <div className='row'>
                 {
-                    cursos.map(curso => (
+                    cursosPopulares.map(curso => (
                         <div className='col-md-4' key={curso.id}>
                             <Curso
                                 id={curso.id}

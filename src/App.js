@@ -9,6 +9,7 @@ import Registro from './pages/Registro';
 import Publicaciones from './pages/Comunidad';
 import CursosComprados from './pages/CursosComprados';
 import CursosVenta from './pages/CursosVenta';
+import CursoDetalle from './components/CursoDetalle';
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
           <Route path="/comunidad" element={<Publicaciones/>} />
           <Route path="/CursosComprados" element={<CursosComprados/>} />
           <Route path="/CursosVenta" element={<CursosVenta/>} />
-        </Routes>
+          <Route path="/curso/:title" element={<CursoDetalle/>} />
+       </Routes>
         <Footer />
       </div>
     </Router>
