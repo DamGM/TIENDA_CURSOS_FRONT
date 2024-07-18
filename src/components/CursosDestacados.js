@@ -4,33 +4,37 @@ import { supabase } from '../services/client';
 import { useState, useEffect } from 'react';
 
 
-export default function Cursos() {
-    const [cursos, setCursos] = useState([]);
+export default function CursosPopulares() {
+    const [cursosPopulares, setCursosPopulares] = useState([]);
 
     useEffect(() => {
-        async function fetchCursos() {
+        async function fetchCursosPopulares() {
             try {
                 const { data, error } = await supabase
                     .from('cursos')
-                    .select('*')
+                    .select('cursos.*, count(purchase.id) as total_purchase')
+                    .join('purchase', { 'cursos.id': 'purchase.id_curso' })
+                    .group('cursos.id')
+                    .order('total_purchase', { ascending: false })
+                    .limit(3); // Obtener los 3 cursos más comprados
+
                 if (error) {
                     throw error;
                 }
 
-                setCursos(data);
+                setCursosPopulares(data);
             } catch (error) {
-                console.error('Error al obtener cursos:', error.message);
+                console.error('Error al obtener cursos populares:', error.message);
             }
         }
 
-        fetchCursos();
+        fetchCursosPopulares();
     }, []);
-
     return (
         <div className='container d-flex justify-content-center align-items-center h-40'>
             <div className='row'>
                 {
-                    cursos.map(curso => (
+                    cursosPopulares.map(curso => (
                         <div className='col-md-4' key={curso.id}>
                             <Curso
                                 id={curso.id}

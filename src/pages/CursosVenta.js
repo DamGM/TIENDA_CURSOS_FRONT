@@ -7,8 +7,7 @@ export default function CursosVenta() {
     <div>
         <Container className='my-5'>
           <Curso/>
-        </Container>
-     
+        </Container> 
     </div>
   )
 }
