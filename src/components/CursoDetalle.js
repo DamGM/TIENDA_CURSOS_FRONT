@@ -57,6 +57,7 @@ export default function CursoDetalle() {
                 <Col md={5}>
                     <div style={styles.rightContainer}>
                         <h4>Contenido del curso</h4>
+                        <p className='text-justify'>{curso.contenido}</p>
                     </div>
                 </Col>
             </Row>
