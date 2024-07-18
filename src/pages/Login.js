@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../services/client'; 
@@ -10,10 +10,25 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const getSession = async () => {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        setSession(data.session);
+        setUser(data.session?.user ?? null);
+      } catch (error) {
+        console.error('Error al obtener la sesión:', error.message);
+      }
+    };
+
+    getSession();
+  }, []);
+
   async function handleLogin(e) {
     e.preventDefault();
     try {
-      const { data: { session, user }, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -23,9 +38,9 @@ function Login() {
         return;
       }
 
-      setSession(session);
-      setUser(user);
-      navigate('/'); 
+      setSession(data.session);
+      setUser(data.user);
+      navigate('/');
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message);
     }
@@ -33,7 +48,8 @@ function Login() {
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
       setSession(null);
       setUser(null);
     } catch (error) {

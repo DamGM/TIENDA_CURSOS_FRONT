@@ -12,7 +12,7 @@ export default function Curso({ id, title, imageSource, description, price, star
             <div className='curso-body text-dark'>
                 <h4 className='curso-title'>{title}</h4>
                 <p className='curso-text text-secondary'>{description}</p>
-                <p><strong>Precio:</strong> {price}</p>
+                <p><strong>Precio:</strong> {price}€</p>
                 <p><strong>Fecha de inicio:</strong> {new Date(start_date).toLocaleDateString()}</p>
                 <Link to={`/curso/${title}`} className='btn btn-outline-secondary btn-3d rounded-20' style={{ backgroundColor: '#b0dbb2' }}>
                     VER CURSO
