@@ -47,7 +47,7 @@ export default function CursoDetalle() {
                             style={styles.cursoImagen}
                         />
                         <p>{curso.description}</p>
-                        <p><strong>Precio:</strong> {curso.price}</p>
+                        <p><strong>Precio:</strong> {curso.price}€</p>
                         <p><strong>Fecha de inicio:</strong> {new Date(curso.start_date).toLocaleDateString()}</p>
                         <Button variant="primary"> 
                             Añadir al carrito

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container, Form, Button, ListGroup } from 'react-bootstrap';
+import { Container, Form, Button, ListGroup, Alert } from 'react-bootstrap';
 import { supabase } from '../services/client';
 
 function Publicaciones() {
@@ -7,23 +7,16 @@ function Publicaciones() {
   const [content, setContenido] = useState('');
   const [publicaciones, setPublicaciones] = useState([]);
   const [user, setUser] = useState(null);
-
+  
+  
   useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-
+    supabase.auth.getUser().then(({ data: { user }, error }) => {
       if (error) {
         console.error('Error al obtener usuario:', error.message);
         return;
       }
-
       setUser(user);
-    };
-
-    fetchUser();
+    });
     fetchPublicaciones();
   }, []);
 
@@ -39,10 +32,11 @@ function Publicaciones() {
     }
   };
 
-  const handleSubmitPublicacion = async (event) => {
-    event.preventDefault();
+  const handleSubmitPublicacion = async (e) => {
+    e.preventDefault();
     try {
-      if (!user) throw new Error('User not authenticated');
+      if (!user) throw new Error('Usuario no autentificado');
+      console.log('User ID:', user.id);
       const { data, error } = await supabase.from('forum_post').insert([
         { titulo, content, user_id: user.id },
       ]);
@@ -50,7 +44,9 @@ function Publicaciones() {
       console.log('Publicación creada:', data);
       setTitulo('');
       setContenido('');
-      fetchPublicaciones();
+      const newPublicacion = { titulo, content, user_id: user.id,  created_at: new Date().toISOString() };
+    setPublicaciones((prevPublicaciones) => [...prevPublicaciones, newPublicacion]);
+
     } catch (error) {
       console.error('Error al crear publicación:', error.message);
     }
@@ -59,43 +55,51 @@ function Publicaciones() {
   return (
     <Container className="my-5" style={{ minHeight: '70vh' }}>
       <h1>Foro</h1>
-      <Form onSubmit={handleSubmitPublicacion}>
-        <Form.Group controlId="formTitulo">
-          <Form.Label>Título</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Ingresa el título de la publicación"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="formContenido">
-          <Form.Label>Contenido</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            placeholder="Ingresa el contenido de la publicación"
-            value={content}
-            onChange={(e) => setContenido(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit" className="mt-5">
-          Publicar
-        </Button>
-      </Form>
+      {user ? (
+        <>
+          <Form onSubmit={handleSubmitPublicacion}>
+            <Form.Group controlId="formTitulo">
+              <Form.Label>Título</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Ingresa el título de la publicación"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formContenido">
+              <Form.Label>Contenido</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="Ingresa el contenido de la publicación"
+                value={content}
+                onChange={(e) => setContenido(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit" className="mt-5">
+              Publicar
+            </Button>
+          </Form>
+        </>
+      ) : (
+        <Alert variant="warning">
+          Debes <a href="/registro">registrarte</a> o <a href="/login">iniciar sesión</a> para poder publicar en el foro.
+        </Alert>
+      )}
       <ListGroup className="mt-4">
-        {publicaciones.map((publicacion) => (
-          <ListGroup.Item key={publicacion.id}>
-            <h3>{publicacion.titulo}</h3>
-            <p>{publicacion.content}</p>
-            <small>
-              Publicado por: {publicacion.user_id} el{' '}
-              {new Date(publicacion.created_at).toLocaleString()}
-            </small>
-          </ListGroup.Item>
-        ))}
+         {publicaciones.map((publicacion, index) => (
+       <ListGroup.Item key={publicacion.id || index}>
+           <h3>{publicacion.titulo}</h3>
+           <p>{publicacion.content}</p>
+           <small>
+           Publicado por: {publicacion.user_id} el{' '}
+           {new Date(publicacion.created_at).toLocaleString()}
+          </small>
+        </ListGroup.Item>
+       ))}
       </ListGroup>
     </Container>
   );

@@ -22,7 +22,6 @@ function Registro() {
         console.error('Error al registrar:', error.message)
         return;
       }    console.log('Usuario registrado', user);
-      // TODO: ruta a mis cursos cuando esté hecho
       navigate('/CursosVenta');
      
     } catch (error) {
