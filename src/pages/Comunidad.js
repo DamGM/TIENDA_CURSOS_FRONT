@@ -24,7 +24,7 @@ function Publicaciones() {
     try {
       const { data, error } = await supabase
         .from('forum_post')
-        .select('id, user_id, content, created_at, titulo');
+        .select('id, user_email, content, created_at, titulo');
       if (error) throw error;
       setPublicaciones(data);
     } catch (error) {
@@ -36,15 +36,15 @@ function Publicaciones() {
     e.preventDefault();
     try {
       if (!user) throw new Error('Usuario no autentificado');
-      console.log('User ID:', user.id);
+      console.log('User :', user.email);
       const { data, error } = await supabase.from('forum_post').insert([
-        { titulo, content, user_id: user.id },
+        { titulo, content, user_email: user.email },
       ]);
       if (error) throw error;
       console.log('Publicación creada:', data);
       setTitulo('');
       setContenido('');
-      const newPublicacion = { titulo, content, user_id: user.id,  created_at: new Date().toISOString() };
+      const newPublicacion = { titulo, content, user_email: user.email,  created_at: new Date().toISOString() };
     setPublicaciones((prevPublicaciones) => [...prevPublicaciones, newPublicacion]);
 
     } catch (error) {
@@ -95,7 +95,7 @@ function Publicaciones() {
            <h3>{publicacion.titulo}</h3>
            <p>{publicacion.content}</p>
            <small>
-           Publicado por: {publicacion.user_id} el{' '}
+           Publicado por: {publicacion.user_email} el{' '}
            {new Date(publicacion.created_at).toLocaleString()}
           </small>
         </ListGroup.Item>
