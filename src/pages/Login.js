@@ -40,7 +40,7 @@ function Login() {
 
       setSession(data.session);
       setUser(data.user);
-      navigate('/');
+      navigate('/CursosComprados');
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message);
     }
